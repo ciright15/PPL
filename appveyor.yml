@@ -39,9 +39,9 @@ install:
   - set PYTHON_LIB=C:\Python38%PYTHON_PLATFORM%\libs\python38.lib
   - set ARTIFACT=%APPVEYOR_PROJECT_NAME%_%OPENPACE_PLATFORM%-vs%VSVER%-python3
   - set OPENSSL_DIR=C:\OpenSSL-%OPENSSL_PLATFORM%
-  - for /f "usebackq tokens=*" %%a in (cygpath -u %OPENSSL_DIR%) do set OPENSSL_CYGDIR=%%a
+  - for /f "usebackq tokens=*" %%a in (`cygpath -u %OPENSSL_DIR%`) do set OPENSSL_CYGDIR=%%a
   - set OPENPACE_DIR=C:\%ARTIFACT%
-  - for /f "usebackq tokens=*" %%a in (cygpath -u %OPENPACE_DIR%) do set DESTDIR=%%a
+  - for /f "usebackq tokens=*" %%a in (`cygpath -u %OPENPACE_DIR%`) do set DESTDIR=%%a
   - set CRYPTO_CFLAGS=-I%OPENSSL_CYGDIR%/include
   - set CRYPTO_LIBS="-L%OPENSSL_CYGDIR%/lib -llibeay32"
 
@@ -77,9 +77,8 @@ build_script:
   # gengetopt.exe --include-getopt --file-name=cvc-create-cmdline --input= cvc-create.ggo
   - cl /I%OPENSSL_DIR%\include /I. libeacMT.lib %OPENSSL_DIR%\lib\VC\static\%LIBCRYPTO% user32.lib advapi32.lib crypt32.lib gdi32.lib %CL_OPTIONS% %OPENSSL_1_1_0_FLAGS% cvc-create.c read_file.c cvc-create-cmdline.c vc.c
   - cd ..
-  - cd bindings\python\
-  -swig -python -outdir . -I..\bindings python/eac.i
-
+  - cd bindings\win32\
+  - swig -python -outdir . -I.. eac.i
   - cl /I%OPENSSL_DIR%\include /I%PYTHON_INCLUDE% /I..\..\src %CL_OPTIONS% %OPENSSL_1_1_0_FLAGS% /c eac_wrap.c ..\..\src\ssl_compat.c ..\..\src\vc.c
   - link /out:_eac.pyd /dll eac_wrap.obj ssl_compat.obj vc.obj %PYTHON_LIB% ..\..\src\libeacMT.lib %OPENSSL_DIR%\lib\VC\static\%LIBCRYPTO% user32.lib advapi32.lib crypt32.lib gdi32.lib
   - cd ..\..
