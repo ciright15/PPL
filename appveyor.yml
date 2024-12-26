@@ -85,7 +85,7 @@ build_script:
   - cd ..\..
 
   # package all artifacts
-    - bash -c "cp    src/libeacMT.lib                      $DESTDIR/lib"
+  - bash -c "cp    src/libeacMT.lib                      $DESTDIR/lib"
   - bash -c "mkdir -p                                    $DESTDIR/bin"
   - bash -c "cp    src/eactest.exe                       $DESTDIR/bin"
   - bash -c "cp    src/cvc-create.exe                    $DESTDIR/bin"
