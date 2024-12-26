@@ -78,6 +78,7 @@ build_script:
   - cl /I%OPENSSL_DIR%\include /I. libeacMT.lib %OPENSSL_DIR%\lib\VC\static\%LIBCRYPTO% user32.lib advapi32.lib crypt32.lib gdi32.lib %CL_OPTIONS% %OPENSSL_1_1_0_FLAGS% cvc-create.c read_file.c cvc-create-cmdline.c vc.c
   - cd ..
   - cd bindings
+  -lib /out:..\..\src\libeacMT.lib vc.obj ssl_compat.obj other_sources.obj
   - swig -python -outdir . -I.. eac.i
   - cl /I%OPENSSL_DIR%\include /I%PYTHON_INCLUDE% /I..\src %CL_OPTIONS% %OPENSSL_1_1_0_FLAGS% /c eac_wrap.c ..\src\ssl_compat.c ..\src\vc.c
   - link /out:_eac.pyd /dll eac_wrap.obj ssl_compat.obj vc.obj %PYTHON_LIB% ..\..\src\libeacMT.lib %OPENSSL_DIR%\lib\VC\static\%LIBCRYPTO% user32.lib advapi32.lib crypt32.lib gdi32.lib
